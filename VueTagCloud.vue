@@ -1,6 +1,5 @@
 <template lang="html">
   <div>
-   <button type="button" name="button" v-on:click="draw">Boom</button>
    <div id='vue-tag-cloud' class='vue-tag-cloud'></div>
   </div>
 </template>
@@ -20,11 +19,11 @@ export default {
       word_array: this.data,
       cloud_namespace: Math.floor(Math.random() * 1000000).toString(36),
       options: {
-        width: "300",
-        height: "300",
+        width: "650",
+        height: "500",
         center: {
-          x: 300 / 2.0,
-          y: 300 / 2.0
+          x: 650 / 2.0,
+          y: 400 / 2.0
         },
         shape: false,
         removeOverflowing: false,
@@ -88,7 +87,9 @@ export default {
         weight = 5,
         custom_class = "",
         inner_html = "",
-        word_span;
+        word_span,
+        word_link,
+        href;
 
       // Check if min(weight) > max(weight) otherwise use default
       if (
@@ -106,21 +107,25 @@ export default {
       }
 
       // Create a new span and insert node.
-      word_span = document.createElement("span");
+      word_span = document.createElement("a");
+      word_span.href = word.link;
+      word_span.target = '_blank';
       word_span.className = "w" + weight;
       var textNode = document.createTextNode(word.text);
 
-      word_span.appendChild(textNode);
-      if(typeof word.link !== 'undefined'){
-	// Create a link
-	  var	word_link = document.createElement("a");
-	  word_link.setAttribute('href', word.link);
-	  word_link.appendChild(word_span)
-	  document.getElementById("vue-tag-cloud").appendChild(word_link);
-	}else{
-	  //Normal creation
-	  document.getElementById("vue-tag-cloud").appendChild(word_span);
-	}
+      // if(word.link && word.link != '') {
+      //   word_link = document.createElement("a");
+      //   // href = document.createAttribute("href");
+      //   // href.value = word.link;
+      //   // word_link.setAttributeNode(href);
+      //   word_link.appendChild(textNode);
+      //   word_span.appendChild(word_link);
+      //   debugger
+      // } else {
+        word_span.appendChild(textNode);
+      // }
+
+      document.getElementById("vue-tag-cloud").appendChild(word_span);
 
       if (this.options.weights) {
         word_span.style.fontSize = this.options.weights[weight - 1];
@@ -179,10 +184,10 @@ export default {
   font-family: "Helvetica", "Arial", sans-serif;
   font-size: 10px;
   line-height: normal;
-  width: 50%;
+  width: 100%;
   display: inline-block;
   position: relative;
-  height: 30em;
+  height: 40em;
   overflow: hidden;
   color: #09f;
 }
@@ -192,44 +197,44 @@ export default {
   text-decoration: none;
 }
 
-.vue-tag-cloud span { padding: 0; }
-.vue-tag-cloud span.w10 {
+.vue-tag-cloud a { padding: 0; }
+.vue-tag-cloud a.w10 {
   font-size: 550%;
   color: #0cf;
 }
-.vue-tag-cloud span.w9 {
+.vue-tag-cloud a.w9 {
   font-size: 500%;
   color: #0cf;
 }
-.vue-tag-cloud span.w8 {
+.vue-tag-cloud a.w8 {
   font-size: 450%;
   color: #0cf;
 }
-.vue-tag-cloud span.w7 {
+.vue-tag-cloud a.w7 {
   font-size: 400%;
   color: #39d;
 }
-.vue-tag-cloud span.w6 {
+.vue-tag-cloud a.w6 {
   font-size: 350%;
   color: #90c5f0;
 }
-.vue-tag-cloud span.w5 {
+.vue-tag-cloud a.w5 {
   font-size: 300%;
   color: #90a0dd;
 }
-.vue-tag-cloud span.w4 {
+.vue-tag-cloud a.w4 {
   font-size: 250%;
   color: #90c5f0;
 }
-.vue-tag-cloud span.w3 {
+.vue-tag-cloud a.w3 {
   font-size: 200%;
   color: #a0ddff;
 }
-.vue-tag-cloud span.w2 {
+.vue-tag-cloud a.w2 {
   font-size: 150%;
   color: #99ccee;
 }
-.vue-tag-cloud span.w1 {
+.vue-tag-cloud a.w1 {
   font-size: 100%;
   color: #aab5f0;
 }
@@ -237,5 +242,4 @@ export default {
 .vue-tag-cloud a { color: inherit; }
 .vue-tag-cloud a:hover { color: #0df; }
 .vue-tag-cloud a:hover { color: #0cf; }
-
 </style>
